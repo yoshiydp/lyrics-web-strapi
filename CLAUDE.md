@@ -259,10 +259,70 @@ GET http://localhost:1337/api/news?filters[slug][$eq]={slug}&populate=*
 
 ---
 
+## ブランチ運用
+
+```
+master
+  └── develop
+        └── feature/xxx   # 作業ブランチ
+```
+
+| ブランチ | 役割 |
+|---------|------|
+| `master` | 本番リリース用。staging で確認済みのものをマージ |
+| `staging` | 表示・挙動確認用。develop から適宜マージして使用 |
+| `develop` | 開発ベースブランチ。feature ブランチの統合先 |
+| `feature/*` | 機能ごとの作業ブランチ |
+
+### 日常の開発フロー
+
+```bash
+# 1. develop から feature ブランチを切る
+git checkout develop
+git checkout -b feature/xxx
+
+# 2. 実装・コミット
+
+# 3. develop へ PR を作成してマージ
+
+# 4. staging で確認したいとき → develop を staging へマージ
+git checkout staging
+git merge develop
+git push origin staging   # Strapi Cloud STG 環境へ自動デプロイ（設定後）
+
+# 5. 本番リリース → staging を master へマージ
+git checkout master
+git merge staging
+git push origin master    # Strapi Cloud 本番環境へ自動デプロイ（設定後）
+```
+
+---
+
 ## インフラ方針
 
 | 環境 | DB | Strapi ホスティング |
 |------|-----|-------------------|
 | ローカル | PostgreSQL 16（Homebrew） | `yarn develop` |
-| STG | Strapi Cloud 付属 PostgreSQL | Strapi Cloud |
-| 本番 | Strapi Cloud 付属 PostgreSQL（または RDS） | Strapi Cloud（または EC2） |
+| STG | Strapi Cloud 付属 PostgreSQL | Strapi Cloud（`staging` ブランチ） |
+| 本番 | Strapi Cloud 付属 PostgreSQL（または RDS） | Strapi Cloud（`master` ブランチ） |
+
+### Strapi Cloud セットアップ（未対応・後回し）
+
+Strapi Cloud への接続は以下のタイミングで行います。
+
+- 継続利用には有料プランが必要（Pro: $29/月〜、staging + production の2環境）
+- ローカル開発が安定したタイミングで着手する
+
+**セットアップ時の手順（概要）:**
+1. [cloud.strapi.io](https://cloud.strapi.io) でアカウント作成・プロジェクト作成
+2. GitHub リポジトリ（`lyrics-web-strapi`）を接続
+3. `staging` ブランチ → STG 環境、`master` ブランチ → 本番環境 に設定
+4. Strapi Cloud の各環境 URL を `lyrics-web-frontend` の Vercel 環境変数に反映
+   ```bash
+   # lyrics-web-frontend リポジトリで実行
+   vercel env rm NEXT_PUBLIC_STRAPI_URL preview
+   echo "https://your-strapi-staging.strapiapp.com" | vercel env add NEXT_PUBLIC_STRAPI_URL preview staging
+
+   vercel env rm NEXT_PUBLIC_STRAPI_URL production
+   echo "https://your-strapi-prod.strapiapp.com" | vercel env add NEXT_PUBLIC_STRAPI_URL production
+   ```
