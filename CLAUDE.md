@@ -152,8 +152,12 @@ lyrics-web-strapi/
 ├── public/
 │   └── uploads/        # アップロードファイルの保存先（gitignore 済み）
 ├── src/
-│   ├── admin/          # 管理画面カスタマイズ
+│   ├── admin/
+│   │   └── app.tsx     # 管理画面カスタマイズ（ロケール設定など）
 │   ├── api/            # Content Type ごとの API 定義
+│   │   ├── category/
+│   │   ├── author/
+│   │   └── news/
 │   ├── extensions/     # プラグイン拡張
 │   └── index.ts        # エントリーポイント（グローバルフック）
 ├── types/              # 自動生成された TypeScript 型定義
@@ -166,35 +170,58 @@ lyrics-web-strapi/
 
 ## Content Type 設計
 
-### 想定している Content Type（実装予定）
+### 実装済み Content Type
 
-#### news（記事）
+各 Content Type のファイルは `src/api/<name>/` 配下に controller / routes / services / schema.json の形式で定義されています。
+
+#### news（記事）— `src/api/news/`
 
 | フィールド | 型 | 説明 |
 |-----------|-----|------|
-| title | String | 記事タイトル |
+| title | String (required) | 記事タイトル |
 | slug | UID | URL スラッグ（title から自動生成） |
 | excerpt | Text | 概要（一覧ページ用） |
 | body | Rich Text (Blocks) | 本文 |
-| thumbnail | Media | サムネイル画像 |
-| publishedAt | DateTime | 公開日時（Strapi 標準） |
-| category | Relation (category) | カテゴリー（多対一） |
+| thumbnail | Media (images) | サムネイル画像 |
+| publishedAt | DateTime | 公開日時（draftAndPublish: true） |
+| category | Relation → category (多対一) | カテゴリー |
 | seoTitle | String | SEO タイトル |
 | seoDescription | Text | SEO ディスクリプション |
 
-#### category（カテゴリー）
+#### category（カテゴリー）— `src/api/category/`
 
 | フィールド | 型 | 説明 |
 |-----------|-----|------|
-| name | String | カテゴリー名 |
-| slug | UID | URL スラッグ |
+| name | String (required) | カテゴリー名 |
+| slug | UID (required) | URL スラッグ |
+| news_articles | Relation → news (一対多) | 紐づく記事（逆参照） |
 
-#### author（著者）
+#### author（著者）— `src/api/author/`
 
 | フィールド | 型 | 説明 |
 |-----------|-----|------|
-| name | String | 著者名 |
-| avatar | Media | アバター画像 |
+| name | String (required) | 著者名 |
+| avatar | Media (images) | アバター画像 |
+
+---
+
+## 管理画面の日本語化
+
+`src/admin/app.tsx` で日本語ロケールを有効化しています。
+
+```tsx
+// src/admin/app.tsx
+export default {
+  config: {
+    locales: ['ja'],
+  },
+  bootstrap(_app) {},
+};
+```
+
+ユーザーごとの言語切り替えは管理画面右上のユーザーメニュー → **Profile** → **Interface language** から行います。
+
+> **注意:** `config/admin.ts` の型定義に `locales` は存在しません。ロケール設定は必ず `src/admin/app.tsx` で行ってください。
 
 ---
 
