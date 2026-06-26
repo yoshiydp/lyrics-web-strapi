@@ -134,6 +134,20 @@ yarn develop
 
 初回起動時は `http://localhost:1337/admin` にアクセスして管理者アカウントを作成してください。
 
+### Content API のパブリック権限設定（初回のみ）
+
+管理画面で Public ロールに読み取り権限を付与しないと、API が 403 を返します。  
+`yarn develop` 起動後、以下の手順を一度だけ実行してください。
+
+1. `http://localhost:1337/admin` → **Settings** → **Users & Permissions Plugin** → **Roles** → **Public**
+2. 以下の Content Type それぞれで `find` と `findOne` にチェックを入れる
+   - `Author`
+   - `Category`
+   - `News`
+3. **Save** をクリック
+
+> **注意:** この設定はデータベースに保存されるため、新しい環境（STG・本番）では再度同じ手順が必要です。
+
 ---
 
 ## プロジェクト構成
