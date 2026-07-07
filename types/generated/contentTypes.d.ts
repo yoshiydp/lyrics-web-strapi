@@ -473,8 +473,8 @@ export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
-    description: '';
-    displayName: 'Category';
+    description: 'News \u5C02\u7528\u306E\u30AB\u30C6\u30B4\u30EA\u30FC';
+    displayName: 'News Category';
     pluralName: 'categories';
     singularName: 'category';
   };

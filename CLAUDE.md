@@ -142,7 +142,7 @@ yarn develop
 1. `http://localhost:1337/admin` → **Settings** → **Users & Permissions Plugin** → **Roles** → **Public**
 2. 以下の Content Type それぞれで `find` と `findOne` にチェックを入れる
    - `Author`
-   - `Category`
+   - `News Category`
    - `News`
    - `Column`
    - `Column Category`
@@ -210,7 +210,9 @@ lyrics-web-strapi/
 | seoTitle | String | SEO タイトル |
 | seoDescription | Text | SEO ディスクリプション |
 
-#### category（カテゴリー）— `src/api/category/`
+#### category（News カテゴリー）— `src/api/category/`
+
+> 管理画面の表示名は **News Category**。UID（`api::category.category`）・API ルート（`/api/categories`）・DB テーブル名（`categories`）は従来どおり `category` のまま。
 
 | フィールド | 型 | 説明 |
 |-----------|-----|------|
