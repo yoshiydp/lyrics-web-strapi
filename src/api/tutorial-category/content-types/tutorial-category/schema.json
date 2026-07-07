@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tutorial_categories",
+  "info": {
+    "singularName": "tutorial-category",
+    "pluralName": "tutorial-categories",
+    "displayName": "Tutorial Category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "tutorials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tutorial.tutorial",
+      "mappedBy": "category"
+    }
+  }
+}
