@@ -1,0 +1,96 @@
+{
+  "kind": "singleType",
+  "collectionName": "top_pages",
+  "info": {
+    "singularName": "top-page",
+    "pluralName": "top-pages",
+    "displayName": "Top Page",
+    "description": "プロモーションサイトのトップページ。News / Learn セクションは既存 collection type を参照するため件数のみ管理する。"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroTagline": {
+      "type": "string"
+    },
+    "statementKicker": {
+      "type": "string"
+    },
+    "statementHeading": {
+      "type": "text",
+      "required": true
+    },
+    "statementBody": {
+      "type": "text"
+    },
+    "featuresHeading": {
+      "type": "string"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.feature-item",
+      "max": 6
+    },
+    "previewHeading": {
+      "type": "string"
+    },
+    "screens": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.app-screen",
+      "max": 5
+    },
+    "newsHeading": {
+      "type": "string"
+    },
+    "newsCount": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 6
+    },
+    "learnHeading": {
+      "type": "string"
+    },
+    "tutorialSubtitle": {
+      "type": "string"
+    },
+    "tutorialCount": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 6
+    },
+    "columnSubtitle": {
+      "type": "string"
+    },
+    "columnCount": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 6
+    },
+    "faqHeading": {
+      "type": "string"
+    },
+    "faqs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.faq-item"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "sections.cta"
+    },
+    "seoTitle": {
+      "type": "string"
+    },
+    "seoDescription": {
+      "type": "text"
+    }
+  }
+}
