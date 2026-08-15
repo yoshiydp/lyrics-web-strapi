@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_ctas",
+  "info": {
+    "displayName": "CTA",
+    "description": "トップページ CTA セクション（ストアボタンのラベルは固定実装。URL とリード文のみ CMS 管理）"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "lead": {
+      "type": "text"
+    },
+    "appStoreUrl": {
+      "type": "string"
+    },
+    "googlePlayUrl": {
+      "type": "string"
+    }
+  }
+}
