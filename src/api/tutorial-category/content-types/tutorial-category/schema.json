@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "tutorial_categories",
   "info": {
-    "singularName": "category",
-    "pluralName": "categories",
-    "displayName": "News Category",
-    "description": "News 専用のカテゴリー"
+    "singularName": "tutorial-category",
+    "pluralName": "tutorial-categories",
+    "displayName": "Tutorial Category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -21,10 +21,10 @@
       "targetField": "name",
       "required": true
     },
-    "news_articles": {
+    "tutorials": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::news.news",
+      "target": "api::tutorial.tutorial",
       "mappedBy": "category"
     }
   }

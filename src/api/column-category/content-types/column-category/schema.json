@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "column_categories",
   "info": {
-    "singularName": "category",
-    "pluralName": "categories",
-    "displayName": "News Category",
-    "description": "News 専用のカテゴリー"
+    "singularName": "column-category",
+    "pluralName": "column-categories",
+    "displayName": "Column Category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -21,10 +21,10 @@
       "targetField": "name",
       "required": true
     },
-    "news_articles": {
+    "columns": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::news.news",
+      "target": "api::column.column",
       "mappedBy": "category"
     }
   }

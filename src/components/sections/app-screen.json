@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_app_screens",
+  "info": {
+    "displayName": "App Screen",
+    "description": "トップページ App Preview セクションのフォンモック"
+  },
+  "options": {},
+  "attributes": {
+    "caption": {
+      "type": "string"
+    },
+    "screenshot": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "highlighted": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

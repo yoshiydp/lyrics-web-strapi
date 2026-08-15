@@ -142,8 +142,12 @@ yarn develop
 1. `http://localhost:1337/admin` → **Settings** → **Users & Permissions Plugin** → **Roles** → **Public**
 2. 以下の Content Type それぞれで `find` と `findOne` にチェックを入れる
    - `Author`
-   - `Category`
+   - `News Category`
    - `News`
+   - `Column`
+   - `Column Category`
+   - `Tutorial`
+   - `Tutorial Category`
 3. **Save** をクリック
 
 > **注意:** この設定はデータベースに保存されるため、新しい環境（STG・本番）では再度同じ手順が必要です。
@@ -171,7 +175,11 @@ lyrics-web-strapi/
 │   ├── api/            # Content Type ごとの API 定義
 │   │   ├── category/
 │   │   ├── author/
-│   │   └── news/
+│   │   ├── news/
+│   │   ├── column/
+│   │   ├── column-category/
+│   │   ├── tutorial/
+│   │   └── tutorial-category/
 │   ├── extensions/     # プラグイン拡張
 │   └── index.ts        # エントリーポイント（グローバルフック）
 ├── types/              # 自動生成された TypeScript 型定義
@@ -202,7 +210,9 @@ lyrics-web-strapi/
 | seoTitle | String | SEO タイトル |
 | seoDescription | Text | SEO ディスクリプション |
 
-#### category（カテゴリー）— `src/api/category/`
+#### category（News カテゴリー）— `src/api/category/`
+
+> 管理画面の表示名は **News Category**。UID（`api::category.category`）・API ルート（`/api/categories`）・DB テーブル名（`categories`）は従来どおり `category` のまま。
 
 | フィールド | 型 | 説明 |
 |-----------|-----|------|
@@ -216,6 +226,56 @@ lyrics-web-strapi/
 |-----------|-----|------|
 | name | String (required) | 著者名 |
 | avatar | Media (images) | アバター画像 |
+
+#### column（コラム）— `src/api/column/`
+
+| フィールド | 型 | 説明 |
+|-----------|-----|------|
+| title | String (required) | コラムタイトル |
+| slug | UID (required) | URL スラッグ（title から自動生成） |
+| excerpt | Text | 概要（一覧ページ用） |
+| body | Rich Text (Blocks) | 本文 |
+| thumbnail | Media (images) | サムネイル画像 |
+| publishedAt | DateTime | 公開日時（draftAndPublish: true） |
+| author | Relation → author (多対一・単方向) | 執筆者 |
+| category | Relation → column-category (多対一) | コラム専用カテゴリー |
+| seoTitle | String | SEO タイトル |
+| seoDescription | Text | SEO ディスクリプション |
+
+#### column-category（コラムカテゴリー）— `src/api/column-category/`
+
+| フィールド | 型 | 説明 |
+|-----------|-----|------|
+| name | String (required) | カテゴリー名 |
+| slug | UID (required) | URL スラッグ |
+| columns | Relation → column (一対多) | 紐づくコラム（逆参照） |
+
+#### tutorial（チュートリアル）— `src/api/tutorial/`
+
+| フィールド | 型 | 説明 |
+|-----------|-----|------|
+| title | String (required) | チュートリアルタイトル |
+| slug | UID (required) | URL スラッグ（title から自動生成） |
+| excerpt | Text | 概要（一覧ページ用） |
+| body | Rich Text (Blocks) | 本文 |
+| thumbnail | Media (images) | サムネイル画像 |
+| publishedAt | DateTime | 公開日時（draftAndPublish: true） |
+| order | Integer (min: 1) | 連載内の表示順 |
+| difficulty | Enum (beginner / intermediate / advanced) | 難易度 |
+| author | Relation → author (多対一・単方向) | 執筆者 |
+| category | Relation → tutorial-category (多対一) | チュートリアル専用カテゴリー |
+| seoTitle | String | SEO タイトル |
+| seoDescription | Text | SEO ディスクリプション |
+
+#### tutorial-category（チュートリアルカテゴリー）— `src/api/tutorial-category/`
+
+| フィールド | 型 | 説明 |
+|-----------|-----|------|
+| name | String (required) | カテゴリー名 |
+| slug | UID (required) | URL スラッグ |
+| tutorials | Relation → tutorial (一対多) | 紐づくチュートリアル（逆参照） |
+
+> **カテゴリー設計の方針:** News の分類（お知らせ/リリース系）とチュートリアル・コラムの分類は性質が異なるため、既存 `category` は News 専用のまま変更せず、タイプごとに専用カテゴリーを持たせている。author は既存スキーマを変更しないよう単方向リレーションで参照している。
 
 ---
 
